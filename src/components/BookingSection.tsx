@@ -33,16 +33,27 @@ export default function BookingSection() {
   const fpIn = useRef<HTMLInputElement>(null)
   const fpOut = useRef<HTMLInputElement>(null)
 
-  // Flatpickr lazy load
+  // Flatpickr lazy load via CDN
   useEffect(() => {
-    let fp1: { destroy: () => void } | null = null
-    let fp2: { destroy: () => void } | null = null
+    const loadFlatpickr = async () => {
+      // Load via script tag if not already loaded
+      if (!(window as any).flatpickr) {
+        const script = document.createElement('script')
+        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr'
+        script.onload = () => initDates()
+        document.head.appendChild(script)
+      } else {
+        initDates()
+      }
+    }
 
-    import('https://cdn.jsdelivr.net/npm/flatpickr' as string).then((mod) => {
-      const flatpickr = (mod as { default: (el: HTMLElement, opts: object) => { destroy: () => void } }).default
+    const initDates = () => {
+      const fp = (window as any).flatpickr
+      if (!fp) return
+
       if (fpIn.current) {
-        fp1 = flatpickr(fpIn.current, {
-          locale: 'de' as unknown as object,
+        fp(fpIn.current, {
+          locale: 'de',
           minDate: 'today',
           dateFormat: 'd.m.Y',
           disableMobile: true,
@@ -52,8 +63,8 @@ export default function BookingSection() {
         })
       }
       if (fpOut.current) {
-        fp2 = flatpickr(fpOut.current, {
-          locale: 'de' as unknown as object,
+        fp(fpOut.current, {
+          locale: 'de',
           minDate: 'today',
           dateFormat: 'd.m.Y',
           disableMobile: true,
@@ -62,12 +73,9 @@ export default function BookingSection() {
           },
         })
       }
-    }).catch(() => {})
-
-    return () => {
-      fp1?.destroy()
-      fp2?.destroy()
     }
+
+    loadFlatpickr()
   }, [])
 
   const ciDate = parseDMY(checkIn)
