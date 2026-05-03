@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('https://assets.website-files.com/6009ec8cda7f305645c9d91b/60176f9bb43e36419997ecfe_PPNeueMontreal-Book.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('https://assets.website-files.com/6009ec8cda7f305645c9d91b/60176f9b39c5673e51a86f5a_PPNeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'PP Neue Montreal', ui-sans-serif, system-ui, sans-serif;
+  background: #ffffff;
+  color: #051A24;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom Cursor */
+#cursor-dot {
+  width: 8px; height: 8px;
+  background: #D4A574;
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s, background 0.25s;
+}
+#cursor-ring {
+  width: 32px; height: 32px;
+  border: 1.5px solid #D4A574;
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+  opacity: 0.6;
+}
+body.is-hovering #cursor-dot { width: 14px; height: 14px; }
+body.is-hovering #cursor-ring { width: 48px; height: 48px; opacity: 0.35; }
+
+@media (max-width: 768px) {
+  #cursor-dot, #cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+
+/* Scroll progress */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, #D4A574, #C8965A);
+  z-index: 10000; transition: width 0.08s linear;
+}
+
+/* Animations */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(32px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Marquee */
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 40s linear infinite;
+}
+@media (max-width: 768px) {
+  .marquee-track { animation-duration: 18s; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Flatpickr dark overrides */
+.flatpickr-calendar {
+  background: #fff !important;
+  border: 1px solid rgba(212,165,116,0.3) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12) !important;
+  border-radius: 16px !important;
+}
+.flatpickr-day.selected,
+.flatpickr-day.inRange {
+  background: #D4A574 !important;
+  border-color: #D4A574 !important;
+  color: white !important;
+}
+.flatpickr-day:hover { background: rgba(212,165,116,0.15) !important; }
+
+/* Lightbox overlay */
+.lightbox-overlay {
+  position: fixed; inset: 0;
+  background: rgba(5,26,36,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 8000;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeInUp 0.25s ease-out forwards;
+}
+
+/* Gallery 3d hover */
+.gallery-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
