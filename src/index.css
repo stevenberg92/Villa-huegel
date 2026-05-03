@@ -122,3 +122,4 @@ body.is-hovering #cursor-ring { width: 48px; height: 48px; opacity: 0.35; }
   transform-style: preserve-3d;
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+/* trigger */
