@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Star, Wifi, Car, Wind, Flame, Utensils, Tv, Anchor, Shield, BedDouble, Bath, Sun } from 'lucide-react'
+import { Star, Wifi, Car, Wind, Flame, Utensils, Tv, Anchor, Shield, BedDouble, Bath, Sun, Waves, Snowflake, ParkingCircle } from 'lucide-react'
 import Button from './components/Button'
 import Marquee from './components/Marquee'
 import GallerySection from './components/GallerySection'
@@ -7,7 +7,6 @@ import TestimonialCarousel from './components/TestimonialCarousel'
 import BookingSection from './components/BookingSection'
 import PartnerSection from './components/PartnerSection'
 import Footer from './components/Footer'
-import BottomNav from './components/BottomNav'
 import { useInViewAnimation } from './hooks/useInViewAnimation'
 
 const BASE = 'https://raw.githubusercontent.com/stevenberg92/Villa-huegel/main/Villa%20Berg%20guzmann/Bilder/'
@@ -89,16 +88,16 @@ function Navbar() {
   ]
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500 ${scrolled ? 'py-4 bg-white/95 backdrop-blur-md border-b border-black/6 shadow-sm' : 'py-6'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500 ${scrolled ? 'py-4 bg-white/90 backdrop-blur-xl border-b border-black/6 shadow-sm' : 'py-6'}`}>
       <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-        <a href="#" className="font-serif text-2xl italic font-semibold text-[#051A24] cursor-none">
+        <a href="#" className={`font-serif text-2xl italic font-semibold cursor-none transition-colors ${scrolled ? 'text-[#051A24]' : 'text-white drop-shadow-md'}`}>
           Villa Berg
         </a>
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-8">
           {links.map(l => (
             <li key={l.label}>
-              <a href={l.href} className="text-xs tracking-[0.12em] uppercase font-medium text-[#051A24] hover:text-[#D4A574] transition-colors cursor-none">
+              <a href={l.href} className={`text-xs tracking-[0.12em] uppercase font-medium hover:text-[#D4A574] transition-colors cursor-none ${scrolled ? 'text-[#051A24]' : 'text-white drop-shadow-md'}`}>
                 {l.label}
               </a>
             </li>
@@ -109,9 +108,9 @@ function Navbar() {
         </div>
         {/* Mobile toggle */}
         <button onClick={() => setOpen(!open)} className="md:hidden flex flex-col gap-[5px] cursor-none p-1">
-          <span className={`w-6 h-[1.5px] bg-[#051A24] transition-all ${open ? 'rotate-45 translate-y-[6.5px]' : ''}`} />
-          <span className={`w-6 h-[1.5px] bg-[#051A24] transition-all ${open ? 'opacity-0' : ''}`} />
-          <span className={`w-6 h-[1.5px] bg-[#051A24] transition-all ${open ? '-rotate-45 -translate-y-[6.5px]' : ''}`} />
+          <span className={`w-6 h-[1.5px] transition-all ${scrolled ? 'bg-[#051A24]' : 'bg-white'} ${open ? 'rotate-45 translate-y-[6.5px]' : ''}`} />
+          <span className={`w-6 h-[1.5px] transition-all ${scrolled ? 'bg-[#051A24]' : 'bg-white'} ${open ? 'opacity-0' : ''}`} />
+          <span className={`w-6 h-[1.5px] transition-all ${scrolled ? 'bg-[#051A24]' : 'bg-white'} ${open ? '-rotate-45 -translate-y-[6.5px]' : ''}`} />
         </button>
       </div>
       {/* Mobile menu */}
@@ -150,45 +149,56 @@ function Hero() {
           backgroundPosition: 'center',
         }}
       />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/90" />
+      {/* Subtle dark gradient for legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-[680px] mx-auto pt-20">
-        <p className="animate-fade-in-up font-mono text-xs tracking-[0.25em] text-[#051A24] uppercase mb-4" style={{ animationDelay: '0.1s' }}>
-          Benissa &nbsp;·&nbsp; Costa Blanca &nbsp;·&nbsp; Spanien
-        </p>
-        <h1
-          className="animate-fade-in-up text-[52px] md:text-[72px] lg:text-[88px] leading-[0.95] tracking-tight text-[#0D212C] mb-6"
-          style={{ animationDelay: '0.2s' }}
-        >
-          Villa <span className="font-serif italic">Berg</span>
-        </h1>
-        <p
-          className="animate-fade-in-up text-base md:text-lg text-[#273C46] leading-relaxed mb-8 max-w-md mx-auto"
-          style={{ animationDelay: '0.3s' }}
-        >
-          Privatvilla mit Pool und Bergblick – 4 Schlafzimmer für 8 Gäste, mitten in der Costa Blanca.
-        </p>
+      {/* Content - Glass card */}
+      <div className="relative z-10 px-6 max-w-[760px] mx-auto pt-20">
         <div
-          className="animate-fade-in-up flex flex-col sm:flex-row gap-3 justify-center"
-          style={{ animationDelay: '0.4s' }}
+          className="rounded-[36px] px-8 md:px-14 py-12 md:py-16 text-center"
+          style={{
+            background: 'rgba(255,255,255,0.18)',
+            backdropFilter: 'blur(24px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+            border: '1px solid rgba(255,255,255,0.35)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.4)',
+          }}
         >
-          <Button href="#galerie" variant="primary">Entdecken</Button>
-          <Button href="#buchen" variant="secondary">Jetzt anfragen</Button>
-        </div>
-        <div className="animate-fade-in-up flex items-center justify-center gap-6 mt-10 text-sm text-[#273C46]" style={{ animationDelay: '0.5s' }}>
-          <span className="flex items-center gap-1.5"><Star className="w-4 h-4 fill-[#D4A574] text-[#D4A574]" /> 4,75 · 16 Bewertungen</span>
-          <span className="w-px h-4 bg-black/15" />
-          <span>173 € / Nacht</span>
-          <span className="w-px h-4 bg-black/15" />
-          <span>Bis 8 Gäste</span>
+          <p className="animate-fade-in-up font-mono text-[10px] md:text-xs tracking-[0.25em] text-white/90 uppercase mb-4" style={{ animationDelay: '0.1s' }}>
+            Benissa &nbsp;·&nbsp; Costa Blanca &nbsp;·&nbsp; Spanien
+          </p>
+          <h1
+            className="animate-fade-in-up text-[44px] md:text-[68px] lg:text-[80px] leading-[0.95] tracking-tight text-white mb-5"
+            style={{ animationDelay: '0.2s', textShadow: '0 2px 24px rgba(0,0,0,0.25)' }}
+          >
+            Villa <span className="font-serif italic">Berg</span>
+          </h1>
+          <p
+            className="animate-fade-in-up text-base md:text-lg text-white/90 leading-relaxed mb-8 max-w-md mx-auto"
+            style={{ animationDelay: '0.3s', textShadow: '0 1px 12px rgba(0,0,0,0.3)' }}
+          >
+            Privatvilla mit Pool und Bergblick — 4 Schlafzimmer für 8 Gäste, mitten in der Costa Blanca.
+          </p>
+          <div
+            className="animate-fade-in-up flex flex-col sm:flex-row gap-3 justify-center mb-8"
+            style={{ animationDelay: '0.4s' }}
+          >
+            <Button href="#galerie" variant="primary">Entdecken</Button>
+            <Button href="#buchen" variant="secondary">Jetzt anfragen</Button>
+          </div>
+          <div className="animate-fade-in-up flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/90" style={{ animationDelay: '0.5s' }}>
+            <span className="flex items-center gap-1.5"><Star className="w-4 h-4 fill-[#D4A574] text-[#D4A574]" /> 4,75 · 16 Bewertungen</span>
+            <span className="hidden sm:inline w-px h-4 bg-white/30" />
+            <span>173 € / Nacht</span>
+            <span className="hidden sm:inline w-px h-4 bg-white/30" />
+            <span>Bis 8 Gäste</span>
+          </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-        <span className="text-[10px] tracking-[0.2em] uppercase text-[#273C46]/60">Scrollen</span>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <span className="text-[10px] tracking-[0.2em] uppercase text-white/80">Scrollen</span>
         <div className="w-px h-10 bg-gradient-to-b from-[#D4A574] to-transparent" />
       </div>
     </section>
@@ -245,6 +255,13 @@ function About() {
     return () => { el.removeEventListener('mousemove', h); el.removeEventListener('mouseleave', reset) }
   }, [])
 
+  const features = [
+    { Icon: Waves, label: 'Privater Pool', sub: 'Ganzjährig geöffnet' },
+    { Icon: Snowflake, label: 'Zentralklima', sub: 'In allen Räumen' },
+    { Icon: Wifi, label: 'Gratis WLAN', sub: 'Hochgeschwindigkeit' },
+    { Icon: ParkingCircle, label: 'Parkplatz', sub: 'Privat & überdacht' },
+  ]
+
   return (
     <section id="villa" className="py-20 px-6 max-w-[1200px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -258,16 +275,17 @@ function About() {
             <p>Vier Schlafzimmer, zwei Bäder, ein großer Wohn-Essbereich und eine vollausgestattete Küche sorgen für einen rundum erholsamen Aufenthalt – ideal für Familien und Gruppen bis 8 Personen.</p>
             <p>Der private Pool mit Sonnenterrasse, der überdachte Grillbereich und das eingezäunte Grundstück machen die Villa zum perfekten Rückzugsort unter spanischer Sonne.</p>
           </div>
-          <div className="mt-8 grid grid-cols-2 gap-3">
-            {[
-              ['🏊', 'Privater Pool'],
-              ['❄️', 'Zentralklima'],
-              ['📶', 'Gratis WLAN'],
-              ['🚗', 'Parkplatz'],
-            ].map(([icon, text]) => (
-              <div key={text} className="flex items-center gap-3 p-3 rounded-xl bg-[#FAFAF8] border border-black/5 hover:border-[#D4A574]/30 transition-colors">
-                <span className="text-xl">{icon}</span>
-                <span className="text-sm font-medium text-[#051A24]">{text}</span>
+          <div className="mt-10 grid grid-cols-2 gap-4">
+            {features.map(({ Icon, label, sub }) => (
+              <div
+                key={label}
+                className="group relative bg-white rounded-2xl p-5 border border-black/5 hover:border-[#D4A574]/40 hover:shadow-[0_8px_24px_rgba(212,165,116,0.12)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D4A574]/15 to-[#D4A574]/5 border border-[#D4A574]/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <Icon className="w-5 h-5 text-[#D4A574]" strokeWidth={1.6} />
+                </div>
+                <p className="text-sm font-medium text-[#051A24] leading-tight">{label}</p>
+                <p className="text-[11px] text-[#273C46]/70 mt-1 tracking-wide">{sub}</p>
               </div>
             ))}
           </div>
@@ -323,7 +341,7 @@ function Amenities() {
         <div ref={ref as React.RefObject<HTMLDivElement>} className={`mb-10 ${inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
           <p className="text-xs font-mono tracking-[0.22em] text-[#D4A574] uppercase mb-3">Ausstattung</p>
           <h2 className="text-[32px] md:text-[44px] leading-[1.1] tracking-tight text-[#0D212C]">
-            Alles was Sie<br /><span className="font-serif italic">begehren</span>
+            Alles, was Sie für einen<br />perfekten <span className="font-serif italic">Urlaub</span> brauchen
           </h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -391,12 +409,42 @@ function Bedrooms() {
 function Surroundings() {
   const { ref, inView } = useInViewAnimation()
   const places = [
-    { img: `${BASE}Moraira%20strand.jpg`, dist: '6 km', name: 'Strand L\'Ampolla de Moraira' },
-    { img: `${ROOT}Cala%20Advocat.png`, dist: '4 km', name: 'Felsenstrand Cala Advocat' },
-    { img: `${ROOT}Club%20de%20Golf%20Ifach.png`, dist: '3 km', name: 'Golf Club de Ifach' },
-    { img: `${BASE}moraira%20stadt.jpg`, dist: '6 km', name: 'Altstadt Moraira' },
-    { img: `${BASE}Hafen.jpg`, dist: 'In der Nähe', name: 'Hafen & Promenade' },
-    { img: `${ROOT}Naturpark%20Pe%C3%B1%C3%B3n%20de%20Ifach.png`, dist: 'Naturpark', name: 'Peñón de Ifach' },
+    {
+      img: `${BASE}Moraira%20strand.jpg`,
+      dist: '6 km · 10 Min.',
+      name: 'Strand L\'Ampolla de Moraira',
+      desc: 'Feiner Sandstrand mit kristallklarem Wasser, ideal für Familien — perfekt für entspannte Tage am Meer.',
+    },
+    {
+      img: `${ROOT}Cala%20Advocat.png`,
+      dist: '4 km · 8 Min.',
+      name: 'Felsenstrand Cala Advocat',
+      desc: 'Versteckte Felsenbucht mit reicher Unterwasserwelt — ein Paradies zum Schnorcheln und Tauchen.',
+    },
+    {
+      img: `${ROOT}Club%20de%20Golf%20Ifach.png`,
+      dist: '3 km · 6 Min.',
+      name: 'Golf Club de Ifach',
+      desc: 'Gepflegter 9-Loch-Golfplatz mit Mittelmeerblick — nur wenige Minuten von der Villa entfernt.',
+    },
+    {
+      img: `${BASE}moraira%20stadt.jpg`,
+      dist: '6 km · 12 Min.',
+      name: 'Altstadt Moraira',
+      desc: 'Charmante Hafenstadt mit Boutiquen, Cafés und Restaurants — mediterranes Flair und kulinarische Höhepunkte.',
+    },
+    {
+      img: `${BASE}Hafen.jpg`,
+      dist: '6 km · 12 Min.',
+      name: 'Hafen & Promenade',
+      desc: 'Yachthafen mit Strandcafés und Eisdielen — der perfekte Ort für laue Sommerabende am Wasser.',
+    },
+    {
+      img: `${ROOT}Naturpark%20Pe%C3%B1%C3%B3n%20de%20Ifach.png`,
+      dist: '15 km · 20 Min.',
+      name: 'Peñón de Ifach',
+      desc: 'Markantes Wahrzeichen der Costa Blanca — der 332 m hohe Felsen ist Naturschutzgebiet mit beeindruckenden Wanderwegen.',
+    },
   ]
 
   return (
@@ -412,14 +460,18 @@ function Surroundings() {
           {places.map((p, i) => (
             <div
               key={p.name}
-              className={`group relative overflow-hidden rounded-2xl h-64 cursor-none ${inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+              className={`group flex flex-col bg-white rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-400 cursor-none ${inView ? 'animate-fade-in-up' : 'opacity-0'}`}
               style={{ animationDelay: `${i * 0.08}s` }}
             >
-              <img src={p.img} alt={p.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#051A24]/75 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 p-5">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[#D4A574] font-medium">{p.dist}</p>
-                <p className="text-white font-medium mt-1">{p.name}</p>
+              <div className="relative overflow-hidden h-56">
+                <img src={p.img} alt={p.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] tracking-[0.15em] uppercase font-semibold text-[#D4A574]">
+                  {p.dist}
+                </div>
+              </div>
+              <div className="p-5">
+                <p className="font-serif italic text-lg text-[#051A24] leading-tight">{p.name}</p>
+                <p className="text-sm text-[#273C46] mt-2 leading-relaxed">{p.desc}</p>
               </div>
             </div>
           ))}
@@ -450,7 +502,6 @@ export default function App() {
       <BookingSection />
       <PartnerSection />
       <Footer />
-      <BottomNav />
     </>
   )
 }

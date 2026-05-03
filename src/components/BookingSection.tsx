@@ -33,49 +33,44 @@ export default function BookingSection() {
   const fpIn = useRef<HTMLInputElement>(null)
   const fpOut = useRef<HTMLInputElement>(null)
 
-  // Flatpickr lazy load via CDN
+  // Flatpickr lazy load via CDN with German locale
   useEffect(() => {
-    const loadFlatpickr = async () => {
-      // Load via script tag if not already loaded
-      if (!(window as any).flatpickr) {
-        const script = document.createElement('script')
-        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr'
-        script.onload = () => initDates()
-        document.head.appendChild(script)
-      } else {
-        initDates()
-      }
-    }
+    const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve()
+      const s = document.createElement('script')
+      s.src = src
+      s.onload = () => resolve()
+      s.onerror = () => reject()
+      document.head.appendChild(s)
+    })
 
-    const initDates = () => {
-      const fp = (window as any).flatpickr
-      if (!fp) return
+    const init = async () => {
+      try {
+        if (!(window as any).flatpickr) {
+          await loadScript('https://cdn.jsdelivr.net/npm/flatpickr')
+        }
+        await loadScript('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js')
 
-      if (fpIn.current) {
-        fp(fpIn.current, {
-          locale: 'de',
+        const fp = (window as any).flatpickr
+        if (!fp) return
+        const German = (window as any).flatpickr?.l10ns?.de
+
+        const opts = (onPick: (s: string) => void) => ({
+          locale: German || 'default',
           minDate: 'today',
           dateFormat: 'd.m.Y',
           disableMobile: true,
-          onChange: (dates: Date[]) => {
-            if (dates[0]) setCheckIn(formatDate(dates[0]))
-          },
+          onChange: (dates: Date[]) => { if (dates[0]) onPick(formatDate(dates[0])) },
         })
-      }
-      if (fpOut.current) {
-        fp(fpOut.current, {
-          locale: 'de',
-          minDate: 'today',
-          dateFormat: 'd.m.Y',
-          disableMobile: true,
-          onChange: (dates: Date[]) => {
-            if (dates[0]) setCheckOut(formatDate(dates[0]))
-          },
-        })
+
+        if (fpIn.current) fp(fpIn.current, opts(setCheckIn))
+        if (fpOut.current) fp(fpOut.current, opts(setCheckOut))
+      } catch {
+        // Calendar fails silently; user can still submit without exact date
       }
     }
 
-    loadFlatpickr()
+    init()
   }, [])
 
   const ciDate = parseDMY(checkIn)
@@ -134,8 +129,8 @@ export default function BookingSection() {
                 ['Bettwäsche & Handtücher', 'Frisch für jeden Gast'],
                 ['Wöchentlicher Poolservice', 'Professionelle Reinigung'],
                 ['WLAN', 'Hochgeschwindigkeit inklusive'],
-                ['Check-in', '17:00 – 19:00 Uhr'],
-                ['Check-out', 'Bis 10:00 Uhr'],
+                ['Check-in', 'Nach Absprache'],
+                ['Check-out', 'Nach Absprache'],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between items-center py-3 border-b border-black/6">
                   <span className="text-sm text-[#051A24] font-medium">{k}</span>
